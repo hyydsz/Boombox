@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e12cb86c863de246bc92641f3f284ba, type: 3}
+  m_Name: Click
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 09e4b80dc1410ff48a02be7684e82857, type: 3}
+  settings:
+    spatialize: 1
+    nonSpatializedForLocalPlayer: 0
+    occlusion: 1
+    reflections: 1
+    transmission: 0
+    volume: 0.5
+    volume_Variation: 0.2
+    pitch: 1
+    pitch_Variation: 0.1
+    spatialBlend: 1
+    dopplerLevel: 1
+    range: 150
+    minRange: 1
+    customRangeCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    noiseDistance: 0
+    cooldown: 0.02
+    maxInstances: 5
+    mixerGroup: {fileID: 0}

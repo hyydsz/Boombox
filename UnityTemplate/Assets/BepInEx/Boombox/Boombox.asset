@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5935fe2be29657746a533e935b87dc31, type: 3}
+  m_Name: Boombox
+  m_EditorClassIdentifier: 
+  displayName: Boombox
+  icon: {fileID: 21300000, guid: 6ba26619834985a4c909f158f38b3542, type: 3}
+  itemObject: {fileID: 3275560472761043069, guid: 05d7da5427e4ab74d9f5bcc12354f27f,
+    type: 3}
+  itemType: 1
+  toolBudgetCost: 1
+  spawnable: 0
+  toolSpawnRarity: 100
+  budgetCost: 0
+  rarity: 0
+  content: {fileID: 0}
+  groundSizeMultiplier: 1
+  groundMassMultiplier: 1
+  mass: 0
+  holdPos: {x: 0.5, y: -0.8, z: 1}
+  useAlternativeHoldingPos: 0
+  alternativeHoldPos: {x: 0, y: 0, z: 0}
+  holdRotation: {x: 0, y: 180, z: 0}
+  useAlternativeHoldingRot: 0
+  alternativeHoldRot: {x: 0, y: 0, z: 0}
+  id: 0
+  persistentID: 07e364a1-0407-4494-83e6-55bd42806d48
+  purchasable: 1
+  Category: 7
+  price: 100
+  quantity: 0
+  emoteInfo:
+    displayName: 
+    animationName: 
+    unequip: 0
+    emoteLength: 0
+    emoteMovementSpeed: 0
+    emoteAllowRotate: 0
+    emoteBaseScore: 0
+    emoteScoreMultiplier: 0
+    comments: []
+  Tooltips:
+  - m_key: '[LMB] Play'
+  - m_key: '[RMB] Switch Music'

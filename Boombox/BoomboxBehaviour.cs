@@ -16,8 +16,6 @@ namespace Boombox
         private IntEntry indexEntry;
         private VolumeEntry volumeEntry;
 
-        private float maxCharge = 250f;
-
         private SFX_PlayOneShot Click;
         private AudioSource Music;
 
@@ -31,15 +29,18 @@ namespace Boombox
 
         public override void ConfigItem(ItemInstanceData data, PhotonView playerView)
         {
-            if (!data.TryGetEntry(out batteryEntry))
+            if (!Boombox.InfiniteBattery)
             {
-                batteryEntry = new BatteryEntry()
+                if (!data.TryGetEntry(out batteryEntry))
                 {
-                    m_charge = maxCharge,
-                    m_maxCharge = maxCharge
-                };
+                    batteryEntry = new BatteryEntry()
+                    {
+                        m_charge = Boombox.BatteryCapacity,
+                        m_maxCharge = Boombox.BatteryCapacity
+                    };
 
-                data.AddDataEntry(batteryEntry);
+                    data.AddDataEntry(batteryEntry);
+                }
             }
 
             if (!data.TryGetEntry(out onOffEntry))
@@ -138,9 +139,11 @@ namespace Boombox
                 }
             }
 
-            if (batteryEntry.m_charge < 0f)
-            {
-                onOffEntry.on = false;
+            if (!Boombox.InfiniteBattery) {
+                if (batteryEntry.m_charge < 0f)
+                {
+                    onOffEntry.on = false;
+                }
             }
 
             if (volumeEntry.GetVolume() != Music.volume)
@@ -173,7 +176,10 @@ namespace Boombox
 
             if (flag)
             {
-                batteryEntry.m_charge -= Time.deltaTime;
+                if (!Boombox.InfiniteBattery) {
+                    batteryEntry.m_charge -= Time.deltaTime;
+                }
+
                 timeEntry.currentTime = Music.time;
             }
         }

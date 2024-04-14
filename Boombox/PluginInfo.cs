@@ -1,9 +1,9 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using HarmonyLib;
 using ShopUtils;
 using ShopUtils.Language;
 using ShopUtils.Network;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -17,13 +17,14 @@ namespace Boombox
     {
         public const string ModGUID = "hyydsz-Boombox";
         public const string ModName = "Boombox";
-        public const string ModVersion = "1.1.1";
+        public const string ModVersion = "1.1.2";
 
         private readonly Harmony harmony = new Harmony(ModGUID);
 
         public static AssetBundle asset;
 
-        private static ConfigEntry<int> BoomboxPrice;
+        public static bool InfiniteBattery = false;
+        public static float BatteryCapacity = 250f;
 
         void Awake()
         {
@@ -37,7 +38,25 @@ namespace Boombox
 
         private void LoadConfig()
         {
-            BoomboxPrice = Config.Bind("Config", "BoomboxPrice", 100);
+            Networks.SetNetworkSync(new Dictionary<string, object>
+            {
+                {"BoomboxInfiniteBattery", Config.Bind("Config", "InfiniteBattery", false).Value},
+                {"BoomboxBattery", Config.Bind("Config", "BatteryCapacity", 250f).Value }
+            }, 
+            (dic) =>
+            {
+                try
+                {
+                    InfiniteBattery = bool.Parse(dic["BoomboxInfiniteBattery"]);
+                    BatteryCapacity = float.Parse(dic["BoomboxBattery"]);
+
+                    Logger.LogInfo($"Boombox Load [InfiniteBattery: {InfiniteBattery}, InfiniteBattery: {BatteryCapacity}]");
+                }
+                catch
+                {
+                    Logger.LogError($"Boombox Network Error");
+                }
+            });
         }
 
         private void LoadBoombox()
@@ -48,7 +67,7 @@ namespace Boombox
             item.itemObject.AddComponent<BoomboxBehaviour>();
 
             Entries.RegisterAll();
-            Items.RegisterShopItem(item, ShopItemCategory.Misc, BoomboxPrice.Value);
+            Items.RegisterShopItem(item, ShopItemCategory.Misc, Config.Bind("Config", "BoomboxPrice", 100).Value);
             Networks.RegisterItemPrice(item);
         }
 

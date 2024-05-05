@@ -106,7 +106,7 @@
   <ItemGroup>
     <Compile Include="BoomboxBehaviour.cs" />
     <Compile Include="MusicLoadManager.cs" />
-    <Compile Include="PluginInfo.cs" />
+    <Compile Include="Boombox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

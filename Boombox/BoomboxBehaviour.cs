@@ -118,7 +118,7 @@ namespace Boombox
                     Click.Play();
                 }
 
-                if (GlobalInputHandler.GetKeyUp(KeyCode.Equals))
+                if (GlobalInputHandler.GetKeyUp(Boombox.VolumeUpKey.Value))
                 {
                     if (volumeEntry.volume <= 9) {
                         volumeEntry.volume += 1;
@@ -128,7 +128,7 @@ namespace Boombox
                     Click.Play();
                 }
 
-                if (GlobalInputHandler.GetKeyUp(KeyCode.Minus))
+                if (GlobalInputHandler.GetKeyUp(Boombox.VolumeDownKey.Value))
                 {
                     if (volumeEntry.volume >= 1) {
                         volumeEntry.volume -= 1;

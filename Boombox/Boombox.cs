@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using HarmonyLib;
 using ShopUtils;
 using ShopUtils.Language;
@@ -17,7 +18,7 @@ namespace Boombox
     {
         public const string ModGUID = "hyydsz-Boombox";
         public const string ModName = "Boombox";
-        public const string ModVersion = "1.1.2";
+        public const string ModVersion = "1.1.3";
 
         private readonly Harmony harmony = new Harmony(ModGUID);
 
@@ -26,9 +27,13 @@ namespace Boombox
         public static bool InfiniteBattery = false;
         public static float BatteryCapacity = 250f;
 
+        public static ConfigEntry<KeyCode> VolumeUpKey;
+        public static ConfigEntry<KeyCode> VolumeDownKey;
+
         void Awake()
         {
             MusicLoadManager.StartLoadMusic();
+
             LoadConfig();
             LoadBoombox();
             LoadLangauge();
@@ -38,6 +43,9 @@ namespace Boombox
 
         private void LoadConfig()
         {
+            VolumeUpKey = Config.Bind("Config", "VolumeUp", KeyCode.Equals);
+            VolumeDownKey = Config.Bind("Config", "VolumeDown", KeyCode.Minus);
+
             Networks.SetNetworkSync(new Dictionary<string, object>
             {
                 {"BoomboxInfiniteBattery", Config.Bind("Config", "InfiniteBattery", false).Value},

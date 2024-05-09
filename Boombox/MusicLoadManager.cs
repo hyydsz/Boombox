@@ -1,7 +1,6 @@
 ﻿using BepInEx;
 using System.Collections;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -57,7 +56,7 @@ namespace Boombox
                             clip.name = Path.GetFileName(file);
                             BoomboxBehaviour.clips.Add(clip);
 
-                            Debug.Log($"Music Loaded: {clip.name}");
+                            Boombox.log.LogInfo($"Music Loaded: {clip.name}");
                         }
                     }
                 }

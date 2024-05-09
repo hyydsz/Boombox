@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 using HarmonyLib;
 using ShopUtils;
 using ShopUtils.Language;
@@ -16,9 +17,11 @@ namespace Boombox
     [BepInDependency("hyydsz-ShopUtils")]
     public class Boombox : BaseUnityPlugin
     {
+        public static ManualLogSource log;
+
         public const string ModGUID = "hyydsz-Boombox";
         public const string ModName = "Boombox";
-        public const string ModVersion = "1.1.3";
+        public const string ModVersion = "1.1.4";
 
         private readonly Harmony harmony = new Harmony(ModGUID);
 
@@ -32,8 +35,6 @@ namespace Boombox
 
         void Awake()
         {
-            MusicLoadManager.StartLoadMusic();
-
             LoadConfig();
             LoadBoombox();
             LoadLangauge();
@@ -41,10 +42,17 @@ namespace Boombox
             harmony.PatchAll();
         }
 
+        void Start()
+        {
+            MusicLoadManager.StartLoadMusic();
+        }
+
         private void LoadConfig()
         {
             VolumeUpKey = Config.Bind("Config", "VolumeUp", KeyCode.Equals);
             VolumeDownKey = Config.Bind("Config", "VolumeDown", KeyCode.Minus);
+
+            log = Logger;
 
             Networks.SetNetworkSync(new Dictionary<string, object>
             {
@@ -58,7 +66,7 @@ namespace Boombox
                     InfiniteBattery = bool.Parse(dic["BoomboxInfiniteBattery"]);
                     BatteryCapacity = float.Parse(dic["BoomboxBattery"]);
 
-                    Logger.LogInfo($"Boombox Load [InfiniteBattery: {InfiniteBattery}, InfiniteBattery: {BatteryCapacity}]");
+                    Logger.LogInfo($"Boombox Load [InfiniteBattery: {InfiniteBattery}, BatteryCapacity: {BatteryCapacity}]");
                 }
                 catch
                 {
@@ -151,11 +159,6 @@ namespace Boombox
         {
             string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), name);
             return AssetBundle.LoadFromFile(path);
-        }
-
-        public static void AddBoomboxMusic(AudioClip clip)
-        {
-            BoomboxBehaviour.clips.Add(clip);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Boombox
 
         public const string ModGUID = "hyydsz-Boombox";
         public const string ModName = "Boombox";
-        public const string ModVersion = "1.1.4";
+        public const string ModVersion = "1.1.5";
 
         private readonly Harmony harmony = new Harmony(ModGUID);
 
@@ -58,20 +58,14 @@ namespace Boombox
             {
                 {"BoomboxInfiniteBattery", Config.Bind("Config", "InfiniteBattery", false).Value},
                 {"BoomboxBattery", Config.Bind("Config", "BatteryCapacity", 250f).Value }
-            }, 
+            },
             (dic) =>
             {
-                try
-                {
-                    InfiniteBattery = bool.Parse(dic["BoomboxInfiniteBattery"]);
-                    BatteryCapacity = float.Parse(dic["BoomboxBattery"]);
+                // throw error
+                InfiniteBattery = bool.Parse(dic["BoomboxInfiniteBattery"]);
+                BatteryCapacity = float.Parse(dic["BoomboxBattery"]);
 
-                    Logger.LogInfo($"Boombox Load [InfiniteBattery: {InfiniteBattery}, BatteryCapacity: {BatteryCapacity}]");
-                }
-                catch
-                {
-                    Logger.LogError($"Boombox Network Error");
-                }
+                Logger.LogInfo($"Boombox Load [InfiniteBattery: {InfiniteBattery}, BatteryCapacity: {BatteryCapacity}]");
             });
         }
 

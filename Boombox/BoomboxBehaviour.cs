@@ -13,8 +13,8 @@ namespace Boombox
         private BatteryEntry batteryEntry;
         private OnOffEntry onOffEntry;
         private TimeEntry timeEntry;
-        private IntEntry indexEntry;
         private VolumeEntry volumeEntry;
+        private MusicEntry musicEntry;
 
         private SFX_PlayOneShot Click;
         private AudioSource Music;
@@ -63,14 +63,14 @@ namespace Boombox
                 data.AddDataEntry(timeEntry);
             }
 
-            if (!data.TryGetEntry(out indexEntry))
+            if (!data.TryGetEntry(out musicEntry))
             {
-                indexEntry = new IntEntry()
+                musicEntry = new MusicEntry()
                 {
-                    i = 0
+                    selectMusicIndex = 0
                 };
 
-                data.AddDataEntry(indexEntry);
+                data.AddDataEntry(musicEntry);
             }
 
             if (!data.TryGetEntry(out volumeEntry))
@@ -82,6 +82,8 @@ namespace Boombox
 
                 data.AddDataEntry(volumeEntry);
             }
+
+            musicEntry.UpdateMusicName();
         }
 
         void Update()
@@ -92,7 +94,7 @@ namespace Boombox
                 {
                     if (clips.Count == 0) 
                     {
-                        HelmetText.Instance.SetHelmetText("No Music", 3f);
+                        HelmetText.Instance.SetHelmetText("No Music", 2f);
                     }
                     else
                     {
@@ -107,9 +109,10 @@ namespace Boombox
                 {
                     if (clips.Count > 0)
                     {
-                        indexEntry.i += 1;
-                        indexEntry.i %= clips.Count;
-                        indexEntry.SetDirty();
+                        musicEntry.selectMusicIndex += 1;
+                        musicEntry.selectMusicIndex %= clips.Count;
+                        musicEntry.UpdateMusicName();
+                        musicEntry.SetDirty();
 
                         timeEntry.currentTime = 0;
                         timeEntry.SetDirty();
@@ -152,18 +155,15 @@ namespace Boombox
             }
 
             bool flag = onOffEntry.on;
-            if (flag != Music.isPlaying || currentIndex != indexEntry.i)
+            if (flag != Music.isPlaying || currentIndex != musicEntry.selectMusicIndex)
             {
-                // Update State
-                currentIndex = indexEntry.i;
+                currentIndex = musicEntry.selectMusicIndex;
 
                 if (flag)
                 {
-                    if (indexEntry.i <= clips.Count - 1)
+                    if (checkMusic(musicEntry.selectMusicIndex))
                     {
-                        Music.enabled = true;
-
-                        Music.clip = clips[indexEntry.i];
+                        Music.clip = clips[musicEntry.selectMusicIndex];
                         Music.time = timeEntry.currentTime;
                         Music.Play();
                     }
@@ -182,6 +182,11 @@ namespace Boombox
 
                 timeEntry.currentTime = Music.time;
             }
+        }
+
+        public static bool checkMusic(int index)
+        {
+            return index <= clips.Count - 1;
         }
     }
 
@@ -215,6 +220,54 @@ namespace Boombox
         public string GetString()
         {
             return string.Format(VolumeLanguage, volume * 10);
+        }
+    }
+
+    public class MusicEntry : ItemDataEntry, IHaveUIData
+    {
+        private string MusicName;
+
+        public int selectMusicIndex;
+
+        public override void Deserialize(BinaryDeserializer binaryDeserializer)
+        {
+            selectMusicIndex = binaryDeserializer.ReadInt();
+        }
+
+        public override void Serialize(BinarySerializer binarySerializer)
+        {
+            binarySerializer.WriteInt(selectMusicIndex);
+        }
+
+        public void UpdateMusicName()
+        {
+            MusicName = string.Empty;
+
+            if (BoomboxBehaviour.clips.Count > 0 && BoomboxBehaviour.checkMusic(selectMusicIndex))
+            {
+                MusicName = getMusicName(BoomboxBehaviour.clips[selectMusicIndex].name);
+            }
+        }
+
+        public string GetString()
+        {
+            return MusicName;
+        }
+
+        private string getMusicName(string name)
+        {
+            int length;
+            if ((length = name.LastIndexOf('.')) != -1)
+            {
+                name = name.Substring(0, length);
+            }
+
+            if (name.Length > 15) {
+                name = name.Substring(0, 15);
+                name = name + "...";
+            }
+
+            return name;
         }
     }
 }

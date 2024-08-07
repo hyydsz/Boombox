@@ -1,4 +1,5 @@
 # Boombox
+The project has stopped maintenance ☠
 
 ### Clone
 1. Clone this repository from `https://github.com/hyydsz/Boombox.git`

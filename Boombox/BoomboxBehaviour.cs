@@ -25,6 +25,15 @@ namespace Boombox
         {
             Click = transform.Find("SFX/Click").GetComponent<SFX_PlayOneShot>();
             Music = GetComponent<AudioSource>();
+            var gameHandler = GameHandler.Instance;
+            if (gameHandler != null)
+            {
+                var sfxVolumeSetting = gameHandler.SettingsHandler.GetSetting<SFXVolumeSetting>();
+                if (sfxVolumeSetting != null)
+                {
+                    Music.outputAudioMixerGroup = sfxVolumeSetting.mixerGroup;
+                }
+            }
         }
 
         public override void ConfigItem(ItemInstanceData data, PhotonView playerView)
